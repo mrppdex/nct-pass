@@ -62,7 +62,7 @@ var bar = svg
   .append("rect")
   .transition()
   .duration(2000)
-  .ease(d3.easeElastic)
+  .ease(d3.easeBounceOut)
   .delay(function(d, i) {
     return i * 100;
   })

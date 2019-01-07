@@ -3,7 +3,7 @@ from io import BytesIO
 import base64
 import matplotlib.pyplot as plt
 
-from django.shortcuts import render
+from django.shortcuts import render, get_list_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.db.models import Avg, Sum
@@ -50,24 +50,26 @@ def update_context_with_graphics(context):
     return context
 
 def make_context_dict(**kwargs):
-    resp = Vehicle.objects.filter(**kwargs).aggregate(
-                                            Sum('passed'),
-                                            Sum('total'),
-                                            Sum('vehicle_and_safety_equipment'),
-                                            Sum('lighting_and_electrical'),
-                                            Sum('steering_and_suspension'),
-                                            Sum('braking_equipment'),
-                                            Sum('wheels_and_tyres'),
-                                            Sum('engine_noise_and_exhaust'),
-                                            Sum('chassis_and_body'),
-                                            Sum('side_slip_test'),
-                                            Sum('suspension_test'),
-                                            Sum('light_test'),
-                                            Sum('brake_test'),
-                                            Sum('emmissions'),
-                                            Sum('other'),
-                                            Sum('incompletable'),
-                                        )
+    resp_query = Vehicle.objects.filter(**kwargs)
+    resp = get_list_or_404(resp_query)
+    resp = resp_query.aggregate(
+                                Sum('passed'),
+                                Sum('total'),
+                                Sum('vehicle_and_safety_equipment'),
+                                Sum('lighting_and_electrical'),
+                                Sum('steering_and_suspension'),
+                                Sum('braking_equipment'),
+                                Sum('wheels_and_tyres'),
+                                Sum('engine_noise_and_exhaust'),
+                                Sum('chassis_and_body'),
+                                Sum('side_slip_test'),
+                                Sum('suspension_test'),
+                                Sum('light_test'),
+                                Sum('brake_test'),
+                                Sum('emmissions'),
+                                Sum('other'),
+                                Sum('incompletable'),
+                            )
 
     new_dict = {}
     for key, value in resp.items():
