@@ -11,8 +11,11 @@ class VehicleForm(forms.Form):
         queryset=Vehicle.objects.values_list('make', flat=True).distinct().order_by('make'),
         #queryset=Vehicle.objects.all().distinct('make'),
         label='',
-        widget=forms.Select(attrs={"onChange":'this.form.submit()'}),
-        empty_label="Select Make:",
+        widget=forms.Select(
+                    attrs={"onChange":'this.form.submit()',
+                            "class": "form-control"}
+                ),
+        empty_label="Make:",
     )
 
 class VehicleModelForm(forms.Form):
@@ -25,8 +28,9 @@ class VehicleModelForm(forms.Form):
             queryset=Vehicle.objects.filter(make=self.make) \
                                     .values_list('model', flat=True) \
                                     .distinct().order_by('model'),
-            widget=forms.Select(attrs={"onChange":'this.form.submit()'}),
-            empty_label="Select Model:",
+            widget=forms.Select(attrs={"onChange":'this.form.submit()',
+                                       "class": "form-control"}),
+            empty_label="Model:",
         )
 
 class VehicleYearForm(forms.Form):
@@ -40,6 +44,7 @@ class VehicleYearForm(forms.Form):
             queryset=Vehicle.objects.filter(make=self.make, model=self.model) \
                             .values_list('year', flat=True).distinct() \
                             .order_by('year'),
-            widget=forms.Select(attrs={"onChange":'this.form.submit()'}),
-            empty_label="Select Year:",
+            widget=forms.Select(attrs={"onChange":'this.form.submit()',
+                                        "class": "form-control"}),
+            empty_label="Year:",
         )

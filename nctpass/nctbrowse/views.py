@@ -152,6 +152,6 @@ def vehicle_model_results(request, make_id, model_id):
 def vehicle_year_results(request, make_id, model_id, year_id):
 
     context = make_context_dict(make=make_id, model=model_id, year=year_id)
-    context = update_context_with_graphics(context)
+    #context = update_context_with_graphics(context)
 
     return render(request, 'nctbrowse/final_result.html', context)

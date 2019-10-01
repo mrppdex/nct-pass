@@ -1,56 +1,70 @@
-{% load static %}
+{% extends './base_template.html' %}
 
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8" />
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="{% static 'nctbrowse/style.css' %}"
-    />
-  </head>
-  <body>
-    <div class="app">
-      <div id="footer">Pawel Piela &copy;2019</div>
-      <a class="title">{{ make }}</a>
-      <div class="info"><span class="info">{{ passed }}%</span> pass rate</div>
-      <div class="info">(<span class="info">{{ count }}</span> vehicle{{ count|pluralize }} tested)</div>
-      <div id="select_form">
-        <form action="{% url 'make_results' make %}" method="post">
-          <div class="eupart">
-            <span id="irl">IRL</span> {% csrf_token %} {{ form }}
-          </div>
-          <input type="hidden" name="make" value="{{ make }}" readonly />
-        </form>
-        {% if failures %}
-        <div class="list">
-          <a id="chart">
-            {{ failures|length }}
-            {{ failures|length|pluralize:"main,most common" }}
-            fail reason{{ failures|length|pluralize }}</a
-          >
-          <!--
-            <div id="img">
-              <img src="data:image/png;base64,{{ graphic|safe }}">
-            </div>
-          -->
-          <div id="img">
-            <svg class="chart"></svg>
-            <script src="https://d3js.org/d3.v5.js"></script>
-            <script type="text/javascript">
-              var data = [
-                {% for name, value in failures.items %}
-                  {name: "{{ name }}", value: {{ value }}}
-                  {% if not forloop.last %}, {% endif %}
-                {% endfor %}
-              ];
-            </script>
-            <script type="text/javascript" src="/static/nctbrowse/script.js"></script>
-          </div>
-        </div>
-        {% endif %}
-      </div>
+{% block bc %}
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="{% url 'index' %}">Home</a></li>
+    <li class="breadcrumb-item" active>{{ make }}</li>
+  </ol>
+</nav>
+{% endblock %}
+
+
+{% block info %}
+<div class="badge badge-primary text-wrap">
+  <a class="h3">{{ make }}</a>
+  <div class="small"><span class="text-dark">{{ passed }}%</span> pass rate</div>
+  <div class="small">(<span class="text-dark">{{ count }}</span> vehicle{{ count|pluralize }} tested)</div>
+</div>
+{% endblock %}
+
+{% block form %}
+
+<form action="{% url 'make_results' make %}" method="post">
+{% csrf_token %}
+  <div class="input-group flex-nowrap my-3">
+    <div class="input-group-prepend">
+      <span
+        class="input-group-text btn-primary active"
+        id="basic-addon1"
+        >IRL</span
+      >
     </div>
-  </body>
-</html>
+    <input type="hidden" name="make" value="{{ make }}" readonly />
+    {{ form.model }}
+  </div>
+</form>
+
+{% endblock %}
+
+{% if failures %}
+
+{% block chart_title %}
+{{ failures|length }}
+{{ failures|length|pluralize:"main,most common" }}
+fail reason{{ failures|length|pluralize }}:
+{% endblock %}
+
+{% block chart %}
+
+  <!--
+    <div id="img">
+      <img src="data:image/png;base64,{{ graphic|safe }}">
+    </div>
+  -->
+  <div id="container-fluid">
+    <svg class="chart"></svg>
+    <script src="https://d3js.org/d3.v5.js"></script>
+    <script type="text/javascript">
+      var data = [
+        {% for name, value in failures.items %}
+          {name: "{{ name }}", value: {{ value }}}
+          {% if not forloop.last %}, {% endif %}
+        {% endfor %}
+      ];
+    </script>
+    <script type="text/javascript" src="/static/nctbrowse/script.js"></script>
+  </div>
+
+{% endblock %}
+{% endif %}

@@ -1,0 +1,112 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+      integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
+      crossorigin="anonymous"
+    />
+
+    <title>{% block title %}NCT Pass{% endblock %}</title>
+  </head>
+  <body>
+    <nav class="navbar navbar-dark bg-success">
+      <span class="navbar-brand h1 text-warning">NCT Results Browser</span>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#nbTop"
+        aria-controls="nbTop"
+        aria-expanded="false"
+        aria-label="Toggle Navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="nbTop">
+        <ul class="navbar-nav">
+          <li class="nav-item active"><a class="nav-link" href="{% url 'index' %}">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="#" id="aboutme">About</a></li>
+        </ul>
+      </div>
+    </nav>
+    {% block bc %}
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item" active>Home</li>
+      </ol>
+    </nav>
+    {% endblock %}
+    <div class="container-fluid">
+      <div class="row d-flex justify-content-center">
+        <div class="col-6 h4 mt-4 d-flex justify-content-center">
+          {% block info %}{% endblock %}
+        </div>
+      </div>
+      <div class="row d-flex justify-content-center">
+        <div class="col-sm-8 col-lg-4">
+          {% block form %}
+          {% endblock %}
+        </div>
+        <!-- <div class="d-flex flex-column justify-content-center"> -->
+        <div class="col-12 d-flex justify-content-center py-0">
+          {% block chart_title %}{% endblock %}
+        </div>
+        <div class="col-12 d-flex justify-content-center">
+            {% block chart %}{% endblock %}
+        </div>
+        </div>
+      </div>
+    <footer>
+      <nav class="navbar navbar-dark bg-success fixed-bottom">
+        <ul class="nav justify-content-end">
+          <li class="nav-item">
+            <a class="nav-link text-warning small">Pawel Piela &copy;2019</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-warning small" href="mailto:aspiela@gmail.com?Subject=NCT%20Pass">aspiela@gmail.com</a>
+          </li>
+        </ul>
+      </nav>
+    </footer>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script
+      src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+      integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+      integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+      integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      $(() => {
+        $("#aboutme").click( () => { alert("Created by Pawel Piela\naspiela@gmail.com");} );
+      });
+    </script>
+    <script>
+      $(() => {
+        var win_width = $(window).width();
+      });
+    </script>
+  </body>
+</html>

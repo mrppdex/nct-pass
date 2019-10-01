@@ -1,51 +1,52 @@
-{% load static %}
+{% extends './base_template.html' %}
 
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8" />
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="{% static 'nctbrowse/style.css' %}"
-    />
-  </head>
-  <body>
-    <div class="app">
-      <div id="footer">Pawel Piela &copy;2019</div>
-      <a class="title">{{ make }} {{ model }} {{ year }}</a>
-      <div class="info"><span class="info">{{ passed }}%</span> pass rate</div>
-      <div class="info">(<span class="info">{{ count }}</span> vehicle{{ count|pluralize }} tested)</div>
-      {% if failures %}
-      <div id="select_form">
-        <div class="list">
-          <a id="chart">{{ failures|length }} {{ failures|length|pluralize:"main,most common" }}
-            fail reason{{ failures|length|pluralize }}</a>
-            <!--
-              <div id="img">
-                <img src="data:image/png;base64,{{ graphic|safe }}">
-              </div>
-            -->
-            <div id="img">
-              <svg class="chart"></svg>
-              <script src="https://d3js.org/d3.v5.js"></script>
-              <script type="text/javascript">
-                var data = [
-                  {% for name, value in failures.items %}
-                    {name: "{{ name }}", value: {{ value }}}
-                    {% if not forloop.last %}, {% endif %}
-                  {% endfor %}
-                ];
-              </script>
-              <script type="text/javascript" src="/static/nctbrowse/script.js"></script>
-            </div>
-            </div>
-            {% endif %}
-            <a href={% url 'index' %}>
-              Start Again
-            </a>
-            </div>
+{% block bc %}
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="{% url 'index' %}">Home</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'make_results' make %}">{{ make }}</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'model_results' make model %}">{{ model }}</a></li>
+    <li class="breadcrumb-item" active>{{ year }}</li>
+  </ol>
+</nav>
+{% endblock %}
 
-            </div>
-            </body>
-            </html>
+{% block info %}
+<div class="badge badge-primary text-wrap">
+  <a class="h3">{{ make }} {{ model }} {{ year }}</a>
+  <div class="small"><span class="text-dark">{{ passed }}%</span> pass rate</div>
+  <div class="small">(<span class="text-dark">{{ count }}</span> vehicle{{ count|pluralize }} tested)</div>
+</div>
+{% endblock %}
+
+
+  {% block chart_title %}
+  {% if failures %}
+    {{ failures|length }}
+    {{ failures|length|pluralize:"main,most common" }}
+    fail reason{{ failures|length|pluralize }}:
+  {% endif %}
+  {% endblock chart_title %}
+
+  {% block chart %}
+  {% if failures %}
+    <!--
+      <div id="img">
+        <img src="data:image/png;base64,{{ graphic|safe }}">
+      </div>
+    -->
+    <div id="container-fluid">
+      <svg class="chart"></svg>
+      <script src="https://d3js.org/d3.v5.js"></script>
+      <script type="text/javascript">
+        var data = [
+          {% for name, value in failures.items %}
+            {name: "{{ name }}", value: {{ value }}}
+            {% if not forloop.last %}, {% endif %}
+          {% endfor %}
+        ];
+      </script>
+      <script type="text/javascript" src="/static/nctbrowse/script.js"></script>
+    </div>
+  {% endif %}
+  {% endblock chart %}

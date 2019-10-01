@@ -7,11 +7,11 @@ var data = [
 ];
 */
 
-var margin = { top: 20, right: 30, bottom: 50, left: 40 },
-  width = 600 - margin.left - margin.right,
-  height = 70 * (data.length + 1) - margin.top - margin.bottom;
+var binHeight = 30;
 
-var binHeight = height / data.length;
+var margin = { top: 20, right: 10, bottom: 100, left: 10 },
+  width = parseInt(d3.select('.chart').style('width'), 10) - margin.left - margin.right,
+  height = binHeight * (data.length);
 
 var x = d3
   .scaleLinear()
@@ -73,7 +73,8 @@ var bar = svg
 
 svg
   .append("text")
-  .attr("font-size", Math.round(binHeight * 0.3) + "px")
+  .attr("fill", "white")
+  .attr("font-size", Math.round(binHeight * 0.2) + "px")
   .attr("x", d => {
     return x(d.value) - 8;
   })

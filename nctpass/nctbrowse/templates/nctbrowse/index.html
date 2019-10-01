@@ -1,29 +1,18 @@
-{% load static %}
+{% extends './base_template.html' %}
+{% block form %}
 
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8" />
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="{% static 'nctbrowse/style.css' %}"
-    />
-  </head>
-  <body>
-    <div class="app">
-      <div id="footer">Pawel Piela &copy;2019</div>
-      <a class="title">Choose the Maker</a>
-      <div id="select_form">
-        <form action="{% url 'index' %}" method="post">
-          <div class="eupart">
-            <span id="irl">IRL</span>
-          {% csrf_token %} {{ form }}
-          </div>
-        </form>
-      </div>
+<form action="{% url 'index' %}" method="post">
+{% csrf_token %}
+  <div class="input-group flex-nowrap my-3">
+    <div class="input-group-prepend">
+      <span
+        class="input-group-text btn-primary active"
+        id="basic-addon1"
+        >IRL</span
+      >
     </div>
+    {{ form.make }}
+  </div>
+</form>
 
-  </body>
-
-</html>
+{% endblock %}
